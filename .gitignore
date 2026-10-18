@@ -1,0 +1,33 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+
+# Local/raw microscope data and generated inventory products.
+STEM-Bank-26 Archive Sampler/
+_archive_inventory/
+keyword_search.env
+*.local.env
+examples/*/raw/
+examples/*/_archive_inventory/
+
+# Regenerable metadata products.
+*.sqlite
+*.sqlite.gz
+*.sqlite-*
+*.db
+*.csv
+*.tsv
+*.json.gz
+figures/
+sample_session_determination_block_diagram.pdf
+
+# Notebook/editor state.
+.matplotlib-cache/
+.ipynb_checkpoints/
+.vscode/
+.idea/
+
+# Local archive checkout and generated research artifacts.
+Data/
+sample_data/
+sample data/

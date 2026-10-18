@@ -1,0 +1,306 @@
+Appendix: Image Metadata Fields and Example Record
+==================================================
+
+Source database:
+  _archive_inventory/stem_bank_26_trajectories_by_acq_date_sample.sqlite
+
+Source table:
+  image_sequence
+
+Regenerated:
+  2026-08-29 from the rebuilt date/sample trajectory database.
+
+Table coverage:
+  image_sequence rows: 45,066
+  rows with stage X/Y/Z metadata: 44,563
+  rows with field-of-view metadata: 44,301
+
+Convention:
+  The paper topline uses standalone STEM images. In this database that means
+  image_sequence records excluding SI survey images. ADF SI-raster images
+  collected as secondary data during spectrum imaging are not in image_sequence;
+  they are stored separately as child assets in adf_si_raster_images and
+  si_event_assets.
+
+Notes:
+  File paths are relative to the archive root. Empty strings and null values
+  indicate metadata fields that were part of the trajectory schema but were not
+  exposed by the extracted DigitalMicrograph metadata for that image.
+
+
+Image Metadata Fields
+---------------------
+
+image_id
+  SQLite type: INTEGER
+  Primary key for the image_sequence table.
+
+session_id
+  SQLite type: INTEGER
+  Source acquisition-date/sample session identifier.
+
+session_key
+  SQLite type: TEXT
+  Source session key.
+
+trajectory_id
+  SQLite type: INTEGER
+  Split trajectory identifier.
+
+trajectory_key
+  SQLite type: TEXT
+  Human-readable trajectory key.
+
+trajectory_sequence_index
+  SQLite type: INTEGER
+  Image order within the split trajectory.
+
+source_file_id
+  SQLite type: INTEGER
+  File identifier in the raw metadata database.
+
+signal_id
+  SQLite type: INTEGER
+  Signal identifier in the raw metadata database.
+
+path
+  SQLite type: TEXT
+  Relative source file path.
+
+title
+  SQLite type: TEXT
+  Image/signal title from the DigitalMicrograph metadata.
+
+acquisition_date
+  SQLite type: TEXT
+  Normalized acquisition date, ISO format when available.
+
+acquisition_time
+  SQLite type: TEXT
+  Normalized acquisition time.
+
+acquisition_timestamp
+  SQLite type: TEXT
+  Combined acquisition date and time.
+
+sequence_index
+  SQLite type: INTEGER
+  Image order within the source session.
+
+data_shape
+  SQLite type: TEXT
+  Signal data shape as stored in the extracted metadata.
+
+data_dtype
+  SQLite type: TEXT
+  Signal data type.
+
+stage_x_text
+  SQLite type: TEXT
+  Raw stage X value when available.
+
+stage_y_text
+  SQLite type: TEXT
+  Raw stage Y value when available.
+
+stage_z_text
+  SQLite type: TEXT
+  Raw stage Z value when available.
+
+stage_tilt_alpha_text
+  SQLite type: TEXT
+  Raw alpha tilt value when available.
+
+stage_tilt_beta_text
+  SQLite type: TEXT
+  Raw beta tilt value when available.
+
+magnification_text
+  SQLite type: TEXT
+  Raw numeric magnification value when available.
+
+beam_energy_text
+  SQLite type: TEXT
+  Raw beam energy value when available.
+
+beam_current_text
+  SQLite type: TEXT
+  Raw beam current value when available.
+
+camera_length_text
+  SQLite type: TEXT
+  Raw camera length value when available.
+
+dwell_time_text
+  SQLite type: TEXT
+  Raw dwell time value when available.
+
+field_of_view_um_text
+  SQLite type: TEXT
+  Raw field of view in micrometers when available.
+
+probe_current_na_text
+  SQLite type: TEXT
+  Raw probe current in nanoamps when available.
+
+probe_size_nm_text
+  SQLite type: TEXT
+  Raw probe size in nanometers when available.
+
+formatted_magnification_text
+  SQLite type: TEXT
+  Instrument-formatted magnification label.
+
+formatted_voltage_text
+  SQLite type: TEXT
+  Instrument-formatted voltage label.
+
+stage_x_number
+  SQLite type: REAL
+  Numeric stage X value when parsed.
+
+stage_y_number
+  SQLite type: REAL
+  Numeric stage Y value when parsed.
+
+stage_z_number
+  SQLite type: REAL
+  Numeric stage Z value when parsed.
+
+stage_tilt_alpha_number
+  SQLite type: REAL
+  Numeric alpha tilt value when parsed.
+
+stage_tilt_beta_number
+  SQLite type: REAL
+  Numeric beta tilt value when parsed.
+
+magnification_number
+  SQLite type: REAL
+  Numeric magnification value when parsed.
+
+beam_energy_number
+  SQLite type: REAL
+  Numeric beam energy value when parsed.
+
+beam_current_number
+  SQLite type: REAL
+  Numeric beam current value when parsed.
+
+camera_length_number
+  SQLite type: REAL
+  Numeric camera length value when parsed.
+
+dwell_time_number
+  SQLite type: REAL
+  Numeric dwell time value when parsed.
+
+field_of_view_um_number
+  SQLite type: REAL
+  Numeric field of view in micrometers when parsed.
+
+probe_current_na_number
+  SQLite type: REAL
+  Numeric probe current in nanoamps when parsed.
+
+probe_size_nm_number
+  SQLite type: REAL
+  Numeric probe size in nanometers when parsed.
+
+formatted_magnification_number
+  SQLite type: REAL
+  Numeric value parsed from formatted_magnification_text when available.
+
+formatted_voltage_number
+  SQLite type: REAL
+  Numeric value parsed from formatted_voltage_text when available.
+
+focus_text
+  SQLite type: TEXT
+  Focus value placeholder; blank when not exposed by extracted metadata.
+
+defocus_text
+  SQLite type: TEXT
+  Defocus value placeholder; blank when not exposed by extracted metadata.
+
+objective_lens_current_text
+  SQLite type: TEXT
+  Objective lens current placeholder; blank when not exposed by extracted metadata.
+
+condenser_lens_current_text
+  SQLite type: TEXT
+  Condenser lens current placeholder; blank when not exposed by extracted metadata.
+
+projector_lens_current_text
+  SQLite type: TEXT
+  Projector lens current placeholder; blank when not exposed by extracted metadata.
+
+stigmation_x_text
+  SQLite type: TEXT
+  X stigmation placeholder; blank when not exposed by extracted metadata.
+
+stigmation_y_text
+  SQLite type: TEXT
+  Y stigmation placeholder; blank when not exposed by extracted metadata.
+
+
+Example Image Record
+--------------------
+
+This is one standalone STEM image entry from image_sequence.
+
+{
+  "image_id": 1,
+  "session_id": 1,
+  "session_key": "2019-01-16/Vohs group",
+  "trajectory_id": 1,
+  "trajectory_key": "2019-01-16/Vohs group/trajectory_0001",
+  "trajectory_sequence_index": 1,
+  "source_file_id": 87984,
+  "signal_id": 74724,
+  "path": "Vohs group/JEOL  image 1 0014.dm3",
+  "title": "JEOL  image 1 0014",
+  "acquisition_date": "2019-01-16",
+  "acquisition_time": "14:35:02",
+  "acquisition_timestamp": "2019-01-16T14:35:02",
+  "sequence_index": 1,
+  "data_shape": "768x768",
+  "data_dtype": "uint16",
+  "stage_x_text": "-19.3760234375",
+  "stage_y_text": "-20.376388671875",
+  "stage_z_text": "21.140103515625",
+  "stage_tilt_alpha_text": "0.0694548562169075",
+  "stage_tilt_beta_text": "-0.030053284019231796",
+  "magnification_text": "",
+  "beam_energy_text": "",
+  "beam_current_text": "",
+  "camera_length_text": "",
+  "dwell_time_text": "",
+  "field_of_view_um_text": "0.1137203125",
+  "probe_current_na_text": "0.0",
+  "probe_size_nm_text": "0.0",
+  "formatted_magnification_text": "3Mx",
+  "formatted_voltage_text": "80kV",
+  "stage_x_number": -19.3760234375,
+  "stage_y_number": -20.376388671875,
+  "stage_z_number": 21.140103515625,
+  "stage_tilt_alpha_number": 0.0694548562169075,
+  "stage_tilt_beta_number": -0.030053284019231796,
+  "magnification_number": null,
+  "beam_energy_number": null,
+  "beam_current_number": null,
+  "camera_length_number": null,
+  "dwell_time_number": null,
+  "field_of_view_um_number": 0.1137203125,
+  "probe_current_na_number": 0.0,
+  "probe_size_nm_number": 0.0,
+  "formatted_magnification_number": null,
+  "formatted_voltage_number": null,
+  "focus_text": "",
+  "defocus_text": "",
+  "objective_lens_current_text": "",
+  "condenser_lens_current_text": "",
+  "projector_lens_current_text": "",
+  "stigmation_x_text": "",
+  "stigmation_y_text": ""
+}
