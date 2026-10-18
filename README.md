@@ -163,13 +163,6 @@ export STEM_BANK_26_ARCHIVE_ROOT="/path/to/STEM-Bank-26/Data"
 
 The generated `figures/` directory is ignored because figures can be regenerated.
 
-## Example Session
-
-`examples/cupd50_core_she_2022_02_14/` documents a small one-session rebuild selected by the image
-title `800 H2_0902`. The raw files are expected under the Git-ignored `sample data/` directory; generated
-`_archive_inventory/` outputs are ignored, and the example README records the rebuild commands and
-expected counts.
-
 ## Optional Keyword Search
 
 `scripts/search_archive_keywords.py` searches archive paths, session fields, signal fields, and flattened
