@@ -22,24 +22,6 @@ Install the Python dependency into an environment of your choice:
 python -m pip install -r requirements.txt
 ```
 
-## Full Dataset Rebuild
-
-To rebuild all SQLite databases and derived summaries from the full archive in one run:
-
-```sh
-PYTHON="/path/to/python-with-rosettasciio" \
-STEM_BANK_26_ARCHIVE_ROOT="/path/to/STEM-Bank-26" \
-bash scripts/rebuild_full_dataset.sh
-```
-
-Set `STEM_BANK_26_ARCHIVE_ROOT` to the local bucket root. The script automatically processes its
-`data/` subdirectory when present; a path directly to the raw data folder also works. The script
-writes to a standalone `_archive_inventory/rebuild_YYYYMMDD/` directory beside `data/`. It stops if that
-output directory already exists; set `STEM_BANK_26_REBUILD_ID` to choose a different dated folder,
-or set `STEM_BANK_26_OUTPUT_DIR` to use a specific location. Existing inventory files are left as
-they are. The rebuild includes the metadata, session, trajectory, and histogram SQLite databases,
-plus compressed copies and paper metric exports.
-
 ## Archive Layout
 
 ### Download the Full Dataset
@@ -166,6 +148,23 @@ python -u scripts/export_paper_data_breakdown.py \
   -o "$INVENTORY_DIR/paper_data_breakdown.json"
 ```
 
+## Full Dataset Rebuild
+
+To rebuild all SQLite databases and derived summaries from the full archive in one run:
+
+```sh
+PYTHON="/path/to/python-with-rosettasciio" \
+STEM_BANK_26_ARCHIVE_ROOT="/path/to/STEM-Bank-26" \
+bash scripts/rebuild_full_dataset.sh
+```
+
+Set `STEM_BANK_26_ARCHIVE_ROOT` to the local bucket root. The script automatically processes its
+`data/` subdirectory when present; a path directly to the raw data folder also works. The script
+writes to a standalone `_archive_inventory/rebuild_YYYYMMDD/` directory beside `data/`. It stops if that
+output directory already exists; set `STEM_BANK_26_REBUILD_ID` to choose a different dated folder,
+or set `STEM_BANK_26_OUTPUT_DIR` to use a specific location. Existing inventory files are left as
+they are. The rebuild includes the metadata, session, trajectory, and histogram SQLite databases,
+plus compressed copies and paper metric exports.
 ## Outputs
 
 Primary SQLite outputs:
