@@ -9,6 +9,8 @@ import sqlite3
 from pathlib import Path
 from typing import Any, Iterable
 
+from inventory_paths import default_inventory_dir
+
 from build_histogram_datasets import ELEMENTS, infer_elements, prepare_image_magnifications
 
 
@@ -673,22 +675,23 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Export row-level metric CSV datasets from STEM-Bank-26 metadata/session/trajectory SQLite databases."
     )
+    inventory_dir = default_inventory_dir()
     parser.add_argument(
         "--metadata-db",
-        default="_archive_inventory/stem_bank_26_metadata.sqlite",
+        default=str(inventory_dir / "stem_bank_26_metadata.sqlite"),
     )
     parser.add_argument(
         "--sessions-db",
-        default="_archive_inventory/stem_bank_26_sessions_by_acq_date_sample.sqlite",
+        default=str(inventory_dir / "stem_bank_26_sessions_by_acq_date_sample.sqlite"),
     )
     parser.add_argument(
         "--trajectories-db",
-        default="_archive_inventory/stem_bank_26_trajectories_by_acq_date_sample.sqlite",
+        default=str(inventory_dir / "stem_bank_26_trajectories_by_acq_date_sample.sqlite"),
     )
     parser.add_argument(
         "-o",
         "--output-dir",
-        default="_archive_inventory/metric_csvs",
+        default=str(inventory_dir / "metric_csvs"),
     )
     return parser.parse_args()
 

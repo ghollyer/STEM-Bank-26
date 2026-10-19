@@ -2,16 +2,23 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-archive_root="${STEM_BANK_26_ARCHIVE_ROOT:-/Volumes/Hollyer USB/STEM-Bank-26/data}"
-run_id="${STEM_BANK_26_REBUILD_ID:-$(date +%Y%m%d)}"
-archive_parent="$(cd "$(dirname "$archive_root")" && pwd)"
-inventory_dir="${STEM_BANK_26_OUTPUT_DIR:-$archive_parent/_archive_inventory/rebuild_$run_id}"
-python_bin="${PYTHON:-python3}"
-
+archive_input="${STEM_BANK_26_ARCHIVE_ROOT:-/Volumes/Hollyer USB/STEM-Bank-26}"
+if [[ -d "$archive_input/data" ]]; then
+  archive_root="$archive_input/data"
+  inventory_parent="$archive_input"
+else
+  archive_root="$archive_input"
+  inventory_parent="$(dirname "$archive_root")"
+fi
 if [[ ! -d "$archive_root" ]]; then
   echo "Archive root does not exist: $archive_root" >&2
   exit 2
 fi
+run_id="${STEM_BANK_26_REBUILD_ID:-$(date +%Y%m%d)}"
+inventory_parent="$(cd "$inventory_parent" && pwd)"
+inventory_dir="${STEM_BANK_26_OUTPUT_DIR:-$inventory_parent/_archive_inventory/rebuild_$run_id}"
+python_bin="${PYTHON:-python3}"
+
 if [[ -e "$inventory_dir" ]]; then
   echo "Output directory already exists; choose a new STEM_BANK_26_REBUILD_ID or STEM_BANK_26_OUTPUT_DIR: $inventory_dir" >&2
   exit 2

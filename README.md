@@ -27,19 +27,58 @@ python -m pip install -r requirements.txt
 To rebuild all SQLite databases and derived summaries from the full archive in one run:
 
 ```sh
-PYTHON="/path/to/python-with-rsciio" \
-STEM_BANK_26_ARCHIVE_ROOT="/path/to/STEM-Bank-26/data" \
+PYTHON="/path/to/python-with-rosettasciio" \
+STEM_BANK_26_ARCHIVE_ROOT="/path/to/STEM-Bank-26" \
 bash scripts/rebuild_full_dataset.sh
 ```
 
-The script writes to a standalone `_archive_inventory/rebuild_YYYYMMDD/` directory beside the
-archive root (for example, beside `data/` on the Hollyer USB). It stops if that
+Set `STEM_BANK_26_ARCHIVE_ROOT` to the local bucket root. The script automatically processes its
+`data/` subdirectory when present; a path directly to the raw data folder also works. The script
+writes to a standalone `_archive_inventory/rebuild_YYYYMMDD/` directory beside `data/`. It stops if that
 output directory already exists; set `STEM_BANK_26_REBUILD_ID` to choose a different dated folder,
 or set `STEM_BANK_26_OUTPUT_DIR` to use a specific location. Existing inventory files are left as
 they are. The rebuild includes the metadata, session, trajectory, and histogram SQLite databases,
 plus compressed copies and paper metric exports.
 
 ## Archive Layout
+
+### Download the Full Dataset
+
+The full raw dataset is hosted in the [STEM-Bank-26 Hugging Face bucket](https://huggingface.co/buckets/ghollyer/STEM-Bank-26). Install the Hugging Face CLI if `hf` is not already available:
+
+```sh
+curl -LsSf https://hf.co/cli/install.sh | bash
+```
+
+Check the bucket size and file count before downloading:
+
+```sh
+hf buckets info ghollyer/STEM-Bank-26
+```
+
+The bucket contains separate `_archive_inventory/`, `data/`, and `sample_data/` directories. Sync the entire bucket into the local `STEM-Bank-26/` root to preserve that layout. The full rebuild script detects and uses the `data/` subdirectory automatically:
+
+```sh
+STEM_BANK_26_ROOT="/path/to/STEM-Bank-26"
+mkdir -p "$STEM_BANK_26_ROOT"
+hf buckets sync hf://buckets/ghollyer/STEM-Bank-26 "$STEM_BANK_26_ROOT"
+```
+
+From the code repository root, rebuild by passing the bucket root. The script automatically uses its `data/` subdirectory:
+
+```sh
+PYTHON=".venv/bin/python" \
+STEM_BANK_26_ARCHIVE_ROOT="$STEM_BANK_26_ROOT" \
+bash scripts/rebuild_full_dataset.sh
+```
+
+If Hugging Face reports that access is denied, sign in with an account that has access:
+
+```sh
+hf auth login
+```
+
+Then rerun the sync command. The sync command does not delete local files by default, so it can be rerun to fetch missing or changed files.
 
 The scripts expect an archive root containing DigitalMicrograph files.
 
@@ -101,6 +140,11 @@ python -u scripts/extract_session_trajectories.py \
 ```
 
 Export plotting and paper-summary artifacts:
+
+These three exporters default to the newest complete `rebuild_YYYYMMDD/` under the standalone
+`_archive_inventory/` associated with `STEM_BANK_26_ARCHIVE_ROOT`. Their CSV, histogram, and JSON
+outputs are written alongside those databases. Set `STEM_BANK_26_INVENTORY_DIR` to select a
+particular inventory directory; explicit command-line paths still take precedence.
 
 ```sh
 python -u scripts/export_metric_csvs.py \

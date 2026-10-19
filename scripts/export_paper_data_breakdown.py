@@ -10,6 +10,8 @@ import statistics
 from pathlib import Path
 from typing import Any
 
+from inventory_paths import default_inventory_dir
+
 
 SI_SURVEY_EXPR = "(lower(coalesce(title, '')) LIKE '%si survey%' OR lower(coalesce(path, '')) LIKE '%si survey%')"
 
@@ -415,22 +417,23 @@ def build_breakdown(args: argparse.Namespace) -> dict[str, Any]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Export paper-ready STEM-Bank-26 data breakdown statistics as JSON.")
+    inventory_dir = default_inventory_dir()
     parser.add_argument(
         "--metadata-db",
-        default="_archive_inventory/stem_bank_26_metadata.sqlite",
+        default=str(inventory_dir / "stem_bank_26_metadata.sqlite"),
     )
     parser.add_argument(
         "--sessions-db",
-        default="_archive_inventory/stem_bank_26_sessions_by_acq_date_sample.sqlite",
+        default=str(inventory_dir / "stem_bank_26_sessions_by_acq_date_sample.sqlite"),
     )
     parser.add_argument(
         "--trajectories-db",
-        default="_archive_inventory/stem_bank_26_trajectories_by_acq_date_sample.sqlite",
+        default=str(inventory_dir / "stem_bank_26_trajectories_by_acq_date_sample.sqlite"),
     )
     parser.add_argument(
         "-o",
         "--output",
-        default="_archive_inventory/paper_data_breakdown.json",
+        default=str(inventory_dir / "paper_data_breakdown.json"),
     )
     parser.add_argument("--top-shapes", type=int, default=10)
     return parser.parse_args()
