@@ -26,6 +26,7 @@ sample_session_determination_block_diagram.pdf
 .ipynb_checkpoints/
 .vscode/
 .idea/
+.venv/
 
 # Local archive checkout and generated research artifacts.
 Data/

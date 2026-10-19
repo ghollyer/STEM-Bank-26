@@ -1,0 +1,18 @@
+[project]
+name = "stem-bank-26"
+version = "0.1.0"
+description = "Metadata extraction and analysis tools for the STEM-Bank-26 archive"
+requires-python = ">=3.10"
+dependencies = [
+    "rosettasciio",
+]
+
+[project.optional-dependencies]
+notebook = [
+    "jupyter",
+    "matplotlib",
+    "numpy",
+]
+
+[tool.uv]
+package = false

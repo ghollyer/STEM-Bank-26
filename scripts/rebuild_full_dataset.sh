@@ -2,9 +2,10 @@
 set -euo pipefail
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-archive_root="${STEM_BANK_26_ARCHIVE_ROOT:-/Volumes/Hollyer USB/STEM-Bank-26/Data}"
+archive_root="${STEM_BANK_26_ARCHIVE_ROOT:-/Volumes/Hollyer USB/STEM-Bank-26/data}"
 run_id="${STEM_BANK_26_REBUILD_ID:-$(date +%Y%m%d)}"
-inventory_dir="${STEM_BANK_26_OUTPUT_DIR:-$archive_root/_archive_inventory/rebuild_$run_id}"
+archive_parent="$(cd "$(dirname "$archive_root")" && pwd)"
+inventory_dir="${STEM_BANK_26_OUTPUT_DIR:-$archive_parent/_archive_inventory/rebuild_$run_id}"
 python_bin="${PYTHON:-python3}"
 
 if [[ ! -d "$archive_root" ]]; then

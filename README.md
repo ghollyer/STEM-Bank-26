@@ -28,11 +28,12 @@ To rebuild all SQLite databases and derived summaries from the full archive in o
 
 ```sh
 PYTHON="/path/to/python-with-rsciio" \
-STEM_BANK_26_ARCHIVE_ROOT="/path/to/STEM-Bank-26/Data" \
+STEM_BANK_26_ARCHIVE_ROOT="/path/to/STEM-Bank-26/data" \
 bash scripts/rebuild_full_dataset.sh
 ```
 
-The script writes to `_archive_inventory/rebuild_YYYYMMDD/` under the archive. It stops if that
+The script writes to a standalone `_archive_inventory/rebuild_YYYYMMDD/` directory beside the
+archive root (for example, beside `data/` on the Hollyer USB). It stops if that
 output directory already exists; set `STEM_BANK_26_REBUILD_ID` to choose a different dated folder,
 or set `STEM_BANK_26_OUTPUT_DIR` to use a specific location. Existing inventory files are left as
 they are. The rebuild includes the metadata, session, trajectory, and histogram SQLite databases,
@@ -53,8 +54,8 @@ Any path can be used. The commands below use `ARCHIVE_ROOT` and `INVENTORY_DIR` 
 machine-specific paths are not embedded in the scripts.
 
 ```sh
-ARCHIVE_ROOT="/path/to/STEM-Bank-26/Data"
-INVENTORY_DIR="$ARCHIVE_ROOT/_archive_inventory"
+ARCHIVE_ROOT="/path/to/STEM-Bank-26/data"
+INVENTORY_DIR="$(dirname "$ARCHIVE_ROOT")/_archive_inventory"
 mkdir -p "$INVENTORY_DIR"
 ```
 
