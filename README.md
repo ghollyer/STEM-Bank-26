@@ -46,6 +46,74 @@ mkdir -p "$STEM_BANK_26_ROOT"
 hf buckets sync hf://buckets/ghollyer/STEM-Bank-26 "$STEM_BANK_26_ROOT"
 ```
 
+The bucket also includes prebuilt SQLite databases under `_archive_inventory/`, so you can query
+the metadata, sessions, and trajectories without rebuilding them from the raw DigitalMicrograph
+files. After syncing the bucket, set:
+
+```sh
+INVENTORY_DIR="$STEM_BANK_26_ROOT/_archive_inventory"
+```
+
+For example, count metadata signals by category:
+
+```sh
+python - "$INVENTORY_DIR/stem_bank_26_metadata.sqlite" <<'PY'
+import sqlite3
+import sys
+
+db = sqlite3.connect(f"file:{sys.argv[1]}?mode=ro", uri=True)
+for category, count in db.execute(
+    "SELECT category, COUNT(*) FROM signals GROUP BY category ORDER BY COUNT(*) DESC"
+):
+    print(category or "(uncategorized)", count)
+db.close()
+PY
+```
+
+Or list the ten longest trajectories by image count:
+
+```sh
+python - "$INVENTORY_DIR/stem_bank_26_trajectories_by_acq_date_sample.sqlite" <<'PY'
+import sqlite3
+import sys
+
+db = sqlite3.connect(f"file:{sys.argv[1]}?mode=ro", uri=True)
+for row in db.execute("""
+    SELECT session_key, image_count, transition_count, total_elapsed_seconds
+    FROM session_trajectory_summary
+    ORDER BY image_count DESC
+    LIMIT 10
+"""):
+    print(*row, sep="\t")
+db.close()
+PY
+```
+
+To get the archive file paths for a session, use its `session_key` (the paths are relative to
+the `data/` directory):
+
+```sh
+SESSION_KEY="2022-07-07/K2 low dose imaging"
+python - "$INVENTORY_DIR/stem_bank_26_sessions_by_acq_date_sample.sqlite" "$SESSION_KEY" <<'PY'
+import sqlite3
+import sys
+
+db = sqlite3.connect(f"file:{sys.argv[1]}?mode=ro", uri=True)
+for (path,) in db.execute("""
+    SELECT sf.path
+    FROM sessions AS s
+    JOIN session_files AS sf USING (session_id)
+    WHERE s.session_key = ?
+    ORDER BY sf.path
+""", (sys.argv[2],)):
+    print(path)
+db.close()
+PY
+```
+
+To query a dated rebuild instead of the bucket’s prebuilt databases, set `INVENTORY_DIR` to
+`"$STEM_BANK_26_ROOT/_archive_inventory/rebuild_YYYYMMDD"`.
+
 From the code repository root, rebuild by passing the bucket root. The script automatically uses its `data/` subdirectory:
 
 ```sh
